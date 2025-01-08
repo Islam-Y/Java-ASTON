@@ -1,9 +1,11 @@
-package com.aston.javabase.class_structure.Homework;
+package com.aston.javabase.Homework;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 
-public class MyArrayList <T> {
+public class MyArrayList <T>  {
     private int size;
     private T[] array;
     private static final int DEFAULT_CAPACITY = 10;
@@ -100,9 +102,22 @@ public class MyArrayList <T> {
     }
 
     public void sort(Comparator<T> comparator){
-        Arrays.sort(array, 0, size, comparator);
+
+        array = Arrays.copyOf(array, size);
+        QuickSort<T> quickSort = new QuickSort<>();
+        List<T> list = new ArrayList<>(Arrays.asList(array));
+        quickSort.quickSort(list, comparator);
+        array = list.toArray(array);
     }
 
+
+    public void trimToSize() {
+        if (size < array.length) {
+            array = (size == 0)
+                    ? (T[]) new Object[0]
+                    : Arrays.copyOf(array, size);
+        }
+    }
 
     private void grow(){
         T[] newArray = (T[]) new Object[array.length + (array.length >> 1)];
